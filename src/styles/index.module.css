@@ -1,0 +1,6 @@
+.container {
+  position: absolute;
+  z-index: var(--index-1);
+  height: 100%;
+  width: 100%;
+}
