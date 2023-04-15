@@ -3,8 +3,8 @@ import * as THREE from 'three';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { useLilGui } from "../../hooks";
-import styles from '../../styles/index.module.css';
+import { useLilGui } from "@hooks";
+import styles from '@styles/index.module.css';
 
 type Params = {
   angleIndex: number,

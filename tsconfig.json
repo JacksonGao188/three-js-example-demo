@@ -23,7 +23,7 @@
     "paths": {
       "@/*": ["./*"],
       "@styles/*": ["styles/*"],
-      "@hooks/*": ["hooks/*"],
+      "@hooks": ["hooks/index.ts"],
     }
   },
   "include": [
