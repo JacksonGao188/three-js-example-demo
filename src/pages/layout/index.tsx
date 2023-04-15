@@ -1,9 +1,9 @@
-import React, { ReactNode, useMemo, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import styles from './styles.module.css';
 import { Radio, Switch } from 'antd';
-import { useTheme } from '../../hooks';
 import ThreeCuteBrothers from '../threeCuteBrothers';
 import BubbleSort from '../bubbleSort';
+import { useTheme } from '@hooks';
 
 type TEType = 'ThreeCuteBrothers' | 'BubbleSort';
 
