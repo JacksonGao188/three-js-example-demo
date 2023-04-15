@@ -141,7 +141,7 @@ const BubbleSort: FC = () => {
 
   return (
     <>
-      <Space style={{ margin: '10px' }} >
+      <Space className={styles.space}>
         <Button onClick={onCreateRandomArr} disabled={isSorting}>生成随机数组</Button>
         <Button onClick={onStartSort} disabled={isSorting}>开始排序</Button>
       </Space>
