@@ -20,9 +20,6 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.minDistance = 1;
 controls.maxDistance = 6000;
 
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-
 const table: any[] = [
   'H', 'Hydrogen', '1.00794', 1, 1,
   'He', 'Helium', '4.002602', 18, 1,

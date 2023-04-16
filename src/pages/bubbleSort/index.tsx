@@ -2,7 +2,9 @@ import { FC, useCallback, useEffect, useRef, useState } from "react";
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import styles from '@styles/index.module.css';
-import { Button, Space, message } from "antd";
+import { Button, Select, Space, message } from "antd";
+
+type SortType = 'bubbleSort' | 'quickSort' | 'heapSort' | 'selectSort' | 'insertSort' | 'mergeSort' | 'shellSort' | 'radixSort';
 
 // 场景
 const scene = new THREE.Scene();
@@ -24,6 +26,8 @@ gridHelper.rotateX( Math.PI / 2 );
 scene.add( gridHelper );
 // 轨道控制器
 const controls = new OrbitControls(camera, renderer.domElement);
+controls.minDistance = 40;
+controls.maxDistance = 50;
 // 盒子网格集合
 const Group = new THREE.Group();
 let randomArr: { zHeight: number, name: string }[] = [];
@@ -32,6 +36,7 @@ const BubbleSort: FC = () => {
   const threeRef = useRef<HTMLDivElement>(null);
   const timer = useRef<number>(0);
   const [isSorting, setIsSorting] = useState<boolean>(false);
+  const [curSortName, setCurSortName] = useState<SortType>('insertSort');
 
   const initSize = useCallback(() => {
     const _threeRef = threeRef.current;
@@ -91,9 +96,10 @@ const BubbleSort: FC = () => {
 
   // 开始排序
   const onStartSort = async () => {
-    if (!randomArr.length) return message.info('请先点击生成随机数按钮');
+    if (!randomArr.length) return message.info('请先点击生成随机数组按钮');
     setIsSorting(true);
-    await bubbleSort();
+    if (curSortName === 'bubbleSort') await bubbleSort();
+    if (curSortName === 'insertSort') await insertSort();
     setIsSorting(false);
   }
 
@@ -105,7 +111,7 @@ const BubbleSort: FC = () => {
       sorted = true;
       for (let i = 0; i < randomArrLen - 1; i++) {
         if (randomArr[i].zHeight > randomArr[i + 1].zHeight) {
-          await setMeshPositionByName(randomArr[i].name, randomArr[i + 1].name);
+          await exchangeMeshPositionByName(randomArr[i].name, randomArr[i + 1].name);
           [randomArr[i], randomArr[i + 1]] = [randomArr[i + 1], randomArr[i]];
           sorted = false;
         }
@@ -115,7 +121,42 @@ const BubbleSort: FC = () => {
     return true;
   }
 
-  const setMeshPositionByName = (leftMeshName: string, rightMeshName: string): Promise<string> => {
+  // 插入排序
+  const insertSort = async () => {
+    const len = randomArr.length;
+    if (len <= 1) return true;
+    let preIndex, current;
+    for (let i = 1; i < len; i++) {
+      preIndex = i - 1; // 待比较元素的下标
+      current = randomArr[i]; // 当前元素
+      const curMesh: any = Group.getObjectByName(current.name);
+      curMesh.position.z = curMesh.position.z * -1;
+      while (preIndex >= 0 && randomArr[preIndex].zHeight > current.zHeight) {
+        // 前置条件之一: 待比较元素比当前元素大
+        randomArr[preIndex + 1] = randomArr[preIndex]; // 将待比较元素后移一位
+        await exchangeMeshPositionByName(randomArr[preIndex + 1].name, current.name);
+        preIndex--; // 待比较元素的下标前移一位
+      }
+      if (preIndex + 1 !== i) {
+        // 避免同一个元素赋值给自身
+        randomArr[preIndex + 1] = current; // 将当前元素插入预留空位
+        await sleep();
+        curMesh.position.y = Group.getObjectByName(randomArr[preIndex + 1].name)?.position.y;
+      }
+      curMesh.position.z = curMesh.position.z * -1;
+    }
+    return true;
+  };
+
+  const sleep = (delay: number = 1000) => {
+    return new Promise(res => {
+      setTimeout(() => {
+        res(true);
+      }, delay)
+    })
+  }
+
+  const exchangeMeshPositionByName = (leftMeshName: string, rightMeshName: string): Promise<string> => {
     return new Promise(resolve => {
       setTimeout(() => {
         const groupChildren = Group.children;
@@ -142,6 +183,22 @@ const BubbleSort: FC = () => {
   return (
     <>
       <Space className={styles.space}>
+        <Select
+          value={curSortName}
+          style={{ width: 120 }}
+          disabled={isSorting}
+          onChange={setCurSortName}
+          options={[
+            { value: 'bubbleSort', label: '冒泡排序' },
+            { value: 'quickSort', label: '快速排序' },
+            { value: 'heapSort', label: '堆排序' },
+            { value: 'selectSort', label: '选择排序' },
+            { value: 'insertSort', label: '插入排序' },
+            { value: 'mergeSort', label: '归并排序' },
+            { value: 'shellSort', label: '希尔排序' },
+            { value: 'radixSort', label: '基数排序' },
+          ]}
+        />
         <Button onClick={onCreateRandomArr} disabled={isSorting}>生成随机数组</Button>
         <Button onClick={onStartSort} disabled={isSorting}>开始排序</Button>
       </Space>
