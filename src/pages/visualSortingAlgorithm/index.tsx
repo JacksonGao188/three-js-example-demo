@@ -4,7 +4,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import styles from '@styles/index.module.css';
 import { Button, Select, Space, message } from "antd";
 
-type SortType = 'bubbleSort' | 'quickSort' | 'selectSort' | 'insertSort' | 'shellSort';
+type SortType = 'bubbleSort' | 'quickSort' | 'selectionSort' | 'insertionSort' | 'shellSort';
 type RandomArrType = { zHeight: number, name: string }[];
 
 // 场景
@@ -101,8 +101,8 @@ const VisualSortingAlgorithm: FC = () => {
     setIsSorting(true);
     if (curSortName === 'bubbleSort') await bubbleSort(randomArr);
     if (curSortName === 'quickSort') await quickSort(randomArr, 0, randomArr.length - 1);
-    if (curSortName === 'selectSort') await selectSort(randomArr);
-    if (curSortName === 'insertSort') await insertSort(randomArr);
+    if (curSortName === 'selectionSort') await selectionSort(randomArr);
+    if (curSortName === 'insertionSort') await insertionSort(randomArr);
     if (curSortName === 'shellSort') await shellSort(randomArr);
     setIsSorting(false);
   }
@@ -150,7 +150,7 @@ const VisualSortingAlgorithm: FC = () => {
   };
 
   // 选择排序
-  const selectSort = async (arr: RandomArrType) => {
+  const selectionSort = async (arr: RandomArrType) => {
     const arrLen = arr.length;
     let minIndex;
     for (let i = 0; i < arrLen - 1; i++) {
@@ -165,7 +165,7 @@ const VisualSortingAlgorithm: FC = () => {
   };
 
   // 插入排序
-  const insertSort = async (arr: RandomArrType) => {
+  const insertionSort = async (arr: RandomArrType) => {
     const arrLen = arr.length;
     if (arrLen <= 1) return arr;
     let preIndex, current;
@@ -243,7 +243,8 @@ const VisualSortingAlgorithm: FC = () => {
 
   return (
     <>
-      <Space className={styles.space}>
+    <div className={styles.sortSpace}>
+      <Space align='center' >
         <Select
           value={curSortName}
           style={{ width: 120 }}
@@ -252,14 +253,15 @@ const VisualSortingAlgorithm: FC = () => {
           options={[
             { value: 'bubbleSort', label: '冒泡排序' },
             { value: 'quickSort', label: '快速排序' },
-            { value: 'selectSort', label: '选择排序' },
-            { value: 'insertSort', label: '插入排序' },
+            { value: 'selectionSort', label: '选择排序' },
+            { value: 'insertionSort', label: '插入排序' },
             { value: 'shellSort', label: '希尔排序' },
           ]}
         />
         <Button onClick={onCreateRandomArr} disabled={isSorting}>生成随机数组</Button>
         <Button onClick={onStartSort} disabled={isSorting}>开始排序</Button>
       </Space>
+    </div>
       <div className={styles.container} ref={threeRef} />
     </>
   )

@@ -5,10 +5,14 @@
   width: 100%;
 }
 
-.space {
+.sortSpace {
   margin: 10px;
   position: absolute;
+  left: 0; right: 0;
   z-index: var(--index-2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .periodicSpace {
