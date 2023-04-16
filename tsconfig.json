@@ -24,6 +24,7 @@
       "@/*": ["./*"],
       "@styles/*": ["styles/*"],
       "@hooks": ["hooks/index.ts"],
+      "@components": ["components/index.ts"],
     }
   },
   "include": [

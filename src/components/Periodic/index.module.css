@@ -1,0 +1,44 @@
+.element {
+  width: 120px;
+  height: 160px;
+  box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+  border: 1px solid rgba(127,255,255,0.25);
+  font-family: Helvetica, sans-serif;
+  text-align: center;
+  line-height: normal;
+  cursor: default;
+}
+
+.element:hover {
+  box-shadow: 0px 0px 12px rgba(17, 245, 5);
+  border: 1px solid rgb(17, 245, 5);
+  cursor: pointer;
+}
+
+.number {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 12px;
+  color: rgba(127,255,255,0.75);
+}
+
+.symbol {
+  position: absolute;
+  top: 40px;
+  left: 0px;
+  right: 0px;
+  font-size: 60px;
+  font-weight: bold;
+  color: rgba(255,255,255,0.75);
+  text-shadow: 0 0 10px rgba(0,255,255,0.95);
+}
+
+.details {
+  position: absolute;
+  bottom: 15px;
+  left: 0px;
+  right: 0px;
+  font-size: 12px;
+  color: rgba(127,255,255,0.75);
+}

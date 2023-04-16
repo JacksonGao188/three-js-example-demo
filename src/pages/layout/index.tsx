@@ -1,27 +1,33 @@
 import { ReactNode, useMemo, useState } from 'react';
 import styles from './styles.module.css';
 import { Radio, Switch } from 'antd';
+import { useTheme } from '@hooks';
 import ThreeCuteBrothers from '../threeCuteBrothers';
 import BubbleSort from '../bubbleSort';
-import { useTheme } from '@hooks';
+import PeriodicTable from '../periodicTable';
+import GlowingBall from '../glowingBall';
 
-type TEType = 'ThreeCuteBrothers' | 'BubbleSort';
+type TEType = 'ThreeCuteBrothers' | 'BubbleSort' | 'PeriodicTable' | 'GlowingBall';
 
 const Layout = () => {
   const cacheTEType = localStorage.getItem('TEType') || 'ThreeCuteBrothers';
   const [curTEType, setCurTEType] = useState<TEType>(cacheTEType as TEType);
   const [theme, switchTheme] = useTheme();
   
-  const tETypeKey = ['ThreeCuteBrothers', 'BubbleSort'];
-  const tETypeName = ['萌三兄弟', '可视化冒泡排序'];
+  const tETypeKey = ['ThreeCuteBrothers', 'BubbleSort', 'PeriodicTable', 'GlowingBall'];
+  const tETypeName = ['萌三兄弟', '可视化冒泡排序', '元素周期表', '发光小球'];
 
   const _ThreeCuteBrothers = useMemo(() => <ThreeCuteBrothers />, []);
   const _BubbleSort = useMemo(() => <BubbleSort />, []);
+  const _PeriodicTable = useMemo(() => <PeriodicTable />, []);
+  const _MaterialsVariations = useMemo(() => <GlowingBall />, []);
 
   const getComponents = (curTEType: TEType): ReactNode => {
     const components = {
       'ThreeCuteBrothers': _ThreeCuteBrothers,
-      'BubbleSort': _BubbleSort
+      'BubbleSort': _BubbleSort,
+      'PeriodicTable': _PeriodicTable,
+      'GlowingBall': _MaterialsVariations
     }
     return components[curTEType];
   }

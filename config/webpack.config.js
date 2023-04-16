@@ -322,6 +322,7 @@ module.exports = function (webpackEnv) {
         '@': path.join(__dirname,'../src'),
         '@styles': path.join(__dirname,'../src/styles'),
         '@hooks': path.join(__dirname,'../src/hooks/index.ts'),
+        '@components': path.join(__dirname,'../src/components/index.ts'),
       },
       plugins: [
         // Prevents users from importing files from outside of src/ (or node_modules/).

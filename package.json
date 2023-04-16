@@ -9,11 +9,11 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@tweenjs/tween.js": "^18",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.23",
     "@types/react": "^18.0.35",
     "@types/react-dom": "^18.0.11",
-    "@types/three": "^0.150.1",
     "antd": "^5.4.2",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",
@@ -144,5 +144,8 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "@types/three": "^0.150.1"
   }
 }

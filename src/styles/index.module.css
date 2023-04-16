@@ -10,3 +10,13 @@
   position: absolute;
   z-index: var(--index-2);
 }
+
+.periodicSpace {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  z-index: var(--index-2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
