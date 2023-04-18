@@ -4,8 +4,12 @@ import { CSS3DRenderer, CSS3DObject } from 'three/examples/jsm/renderers/CSS3DRe
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { useCallback, useEffect, useRef } from 'react';
 import styles from '@styles/index.module.css'
-import { Button, Space } from 'antd';
 import './index.css'
+
+type ShowType = 'table' | 'sphere' | 'helix' | 'grid';
+type CycleShowArrType = ShowType[];
+
+const cycleShowArr: CycleShowArrType = ['table', 'sphere', 'helix', 'grid']
 
 // 场景
 const scene = new THREE.Scene();
@@ -146,6 +150,7 @@ const targets: any = { table: [], sphere: [], helix: [], grid: [] };
 const PeriodicTable = () => {
   const threeRef = useRef<HTMLDivElement>(null);
   const timer = useRef<number>(0);
+  const timeOut = useRef<NodeJS.Timeout>();
 
   const transform = useCallback(( targets: any, duration: any ) => {
     TWEEN.removeAll();
@@ -251,10 +256,8 @@ const PeriodicTable = () => {
       targets.grid.push( object );
     }
 
-    transform( targets.table, 2000 );
-
     window.addEventListener( 'resize', onWindowResize );
-  }, [onWindowResize, transform])
+  }, [onWindowResize])
 
   const animate = useCallback(() => {
     timer.current = requestAnimationFrame(() => {
@@ -265,28 +268,30 @@ const PeriodicTable = () => {
     });
   }, [])
 
-  const menuAction = (type: 'table' | 'sphere' | 'helix' | 'grid') => transform( targets[type], 2000 );
+  const menuAction = useCallback((type: ShowType) => transform( targets[type], 3000 ), [transform]);
+
+  const onCycleShowArr = useCallback((index: number, delay: number = 6000) => {
+    timeOut.current = setTimeout(() => {
+      const nextIndex = index ===  (cycleShowArr.length - 1) ? 0 : index + 1;
+      menuAction(cycleShowArr[index]);
+      onCycleShowArr(nextIndex);
+    }, delay);
+  }, [menuAction])
 
   useEffect(() => {
     initSize();
     initTable();
-    animate()
+    animate();
+    onCycleShowArr(0);
     threeRef.current?.appendChild(renderer.domElement);
     return () => {
       cancelAnimationFrame(timer.current);
+      clearTimeout(timeOut.current);
     }
-  }, [animate, initTable, initSize])
+  }, [animate, initTable, initSize, onCycleShowArr])
 
   return (
-    <>
-      <div className={styles.container} ref={threeRef} />
-      <Space className={styles.periodicSpace}>
-        <Button onClick={() => menuAction('table')}>TABLE</Button>
-        <Button onClick={() => menuAction('sphere')}>SPHERE</Button>
-        <Button onClick={() => menuAction('helix')}>HELIX</Button>
-        <Button onClick={() => menuAction('grid')}>GRID</Button>
-      </Space>
-    </>
+    <div className={styles.container} ref={threeRef} />
   )
 }
 

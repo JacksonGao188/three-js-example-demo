@@ -243,25 +243,25 @@ const VisualSortingAlgorithm: FC = () => {
 
   return (
     <>
-    <div className={styles.sortSpace}>
-      <Space align='center' >
-        <Select
-          value={curSortName}
-          style={{ width: 120 }}
-          disabled={isSorting}
-          onChange={setCurSortName}
-          options={[
-            { value: 'bubbleSort', label: '冒泡排序' },
-            { value: 'quickSort', label: '快速排序' },
-            { value: 'selectionSort', label: '选择排序' },
-            { value: 'insertionSort', label: '插入排序' },
-            { value: 'shellSort', label: '希尔排序' },
-          ]}
-        />
-        <Button onClick={onCreateRandomArr} disabled={isSorting}>生成随机数组</Button>
-        <Button onClick={onStartSort} disabled={isSorting}>开始排序</Button>
-      </Space>
-    </div>
+      <div className={styles.sortSpace}>
+        <Space align='center' >
+          <Select
+            value={curSortName}
+            style={{ width: 120 }}
+            disabled={isSorting}
+            onChange={setCurSortName}
+            options={[
+              { value: 'bubbleSort', label: '冒泡排序' },
+              { value: 'quickSort', label: '快速排序' },
+              { value: 'selectionSort', label: '选择排序' },
+              { value: 'insertionSort', label: '插入排序' },
+              { value: 'shellSort', label: '希尔排序' },
+            ]}
+          />
+          <Button onClick={onCreateRandomArr} disabled={isSorting}>生成随机数组</Button>
+          <Button onClick={onStartSort} disabled={isSorting}>开始排序</Button>
+        </Space>
+      </div>
       <div className={styles.container} ref={threeRef} />
     </>
   )

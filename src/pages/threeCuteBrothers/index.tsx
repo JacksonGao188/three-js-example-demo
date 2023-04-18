@@ -1,10 +1,10 @@
 import { FC, useCallback, useEffect, useRef } from "react";
-import * as THREE from 'three';
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { useLilGui } from "@hooks";
+import { GLTF, GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import styles from '@styles/index.module.css';
+import { useLilGui } from "@hooks";
+import * as THREE from 'three';
 
 type Params = {
   angleIndex: number,
@@ -36,15 +36,15 @@ directionalLight.shadow.normalBias = 0.05;
 directionalLight.position.set(-20, 0, 2);
 scene.add(directionalLight);
 // 萌三兄弟对象
-let threeCuteBrothers: any = null;
+let threeCuteBrothers: THREE.Object3D<THREE.Event>;
 // 加载萌三兄弟glb模型文件
 const gltfLoader = new GLTFLoader();
 const dracoLoader = new DRACOLoader();
 // draco是谷歌出的一款模型压缩工具，可以将glb/gltf格式的模型进行压缩用以提高页面加载速度。
 dracoLoader.setDecoderPath('/draco/');
 gltfLoader.setDRACOLoader(dracoLoader);
-gltfLoader.load('/glb/threeCuteBrothers.glb', (glb) => {
-  glb.scene.children.forEach(item => {
+gltfLoader.load('/glb/threeCuteBrothers.glb', (glb: GLTF) => {
+  glb.scene.children.forEach((item: THREE.Object3D<THREE.Event>) => {
     item.castShadow = true;
     item.receiveShadow = true;
     // 注意模型内部的命名要与这里代码的命名保持一致哦, 我在Blender里把三个模型合成里一个模型。
@@ -87,15 +87,15 @@ const ThreeCuteBrothers: FC = () => {
     renderer.setPixelRatio(pixelRatio);
   }, [])
 
-  const updateParams = (e: number, type: keyof Params) => params[type] = e;
+  const updateParams = (val: number, type: keyof Params) => params[type] = val;
 
   // 添加 Gui 调参可选项
   const addParametersForGui = useCallback(() => {
     const aboutAxis =  guiEntity.addFolder('Axis');
-    aboutAxis?.add(params, 'axisOfRotation').min(0).max(2).step(1).onFinishChange((e: number) => updateParams(e, 'axisOfRotation'));
+    aboutAxis?.add(params, 'axisOfRotation').min(0).max(2).step(1).onFinishChange((val: number) => updateParams(val, 'axisOfRotation'));
     const aboutIndex =  guiEntity.addFolder('Index');
-    aboutIndex?.add(params, 'angleIndex').min(-3.1416).max(3.1416).step(0.005).onFinishChange((e: number) => updateParams(e, 'angleIndex'));
-    aboutIndex?.add(params, 'lightIndex').min(0).max(1).step(0.1).onFinishChange((e: number) => updateParams(e, 'lightIndex'));
+    aboutIndex?.add(params, 'angleIndex').min(-3.1416).max(3.1416).step(0.005).onFinishChange((val: number) => updateParams(val, 'angleIndex'));
+    aboutIndex?.add(params, 'lightIndex').min(0).max(1).step(0.1).onFinishChange((val: number) => updateParams(val, 'lightIndex'));
   }, [guiEntity])
 
   useEffect(() => {
@@ -115,15 +115,15 @@ const ThreeCuteBrothers: FC = () => {
       if (params.axisOfRotation === 2) axis = new THREE.Vector3(0, 0, 1);
       // Quaternion四元数方法修改模型每帧旋转的角度
       const qInitial = new THREE.Quaternion().setFromAxisAngle( axis, params.angleIndex );
-      threeCuteBrothers?.applyQuaternion(qInitial)
+      threeCuteBrothers?.applyQuaternion(qInitial);
       // 修改环境光照的亮度
-      scene.remove(ambient)
-      ambient = new THREE.AmbientLight(0xffffff, params.lightIndex)
-      scene.add(ambient)
+      scene.remove(ambient);
+      ambient = new THREE.AmbientLight(0xffffff, params.lightIndex);
+      scene.add(ambient);
       
       controls.update();
       renderer.render(scene, camera);
-      animate()
+      animate();
     })
   }, [])
 

@@ -13,7 +13,7 @@ const useLilGui = (title: string = 'Title') => {
     const lilGuiStyle: any = document.getElementsByClassName('lil-gui')[0];
     lilGuiStyle.style.top = '31px';
     lilGuiStyle.style.right = '0';
-    GUI.current.close();
+    // GUI.current.close();
     setGuiEntity(GUI.current);
   }, [title])
 
